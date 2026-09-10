@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
 
 jobs:
- unit-test: 
+  unit-test:
     runs-on: ubuntu-latest 
-     
+       
     steps: 
     - uses: actions/checkout@v3 
       with: 
@@ -72,33 +72,33 @@ jobs:
           echo "Deploy STG"        
 
   Smoketest:
-    runs-on: ubuntu-latest
-    needs: deploy-STG
+      runs-on: ubuntu-latest
+      needs: deploy-STG
+  
+      if: github.ref == 'refs/heads/develop'
+  
+      steps:
+        - uses: actions/checkout@v3
+        - name: Deploy
+          shell: bash
+          run: |
+            sh 'src/main/scripts/smoketest.sh'
 
-    if: github.ref == 'refs/heads/develop'
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Deploy
-        shell: bash
-        run: |
-          sh 'src/main/scripts/smoketest.sh'
-
- testeIntegrados: 
-    runs-on: ubuntu-latest 
-    needs: Smoketest 
-    if: github.ref == 'refs/heads/develop' 
-    steps: 
-      - uses: actions/checkout@v3 
-      - name: Deploy  
-        shell: bash 
-        run: | 
-          sh 'src/main/scripts/testeIntegrado.sh' 
+  testeIntegrados: 
+      runs-on: ubuntu-latest 
+      needs: Smoketest 
+      if: github.ref == 'refs/heads/develop' 
+      steps: 
+        - uses: actions/checkout@v3 
+        - name: Deploy  
+          shell: bash 
+          run: | 
+            sh 'src/main/scripts/testeIntegrado.sh' 
   
   deploy-PRE:
     runs-on: ubuntu-latest
     needs: build
-
+    
     steps:
       - name: Deploy 
         shell: bash
