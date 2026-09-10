@@ -4,8 +4,8 @@ on:
   push:
   workflow_dispatch:
 jobs: 
-# Teste 
-unit-test: 
+
+ unit-test: 
     runs-on: ubuntu-latest 
      
     steps: 
@@ -30,12 +30,11 @@ unit-test:
       uses: actions/upload-artifact@v4.4.0 
       with: 
         name: jacoco-report 
-        path: target/site/jacoco 
-
+        path: target/site/jacoco
 
   build: 
     runs-on: ubuntu-latest
-
+    needs: unit-test
     steps:
     - uses: actions/checkout@v3
       with:
